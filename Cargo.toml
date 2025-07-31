@@ -1,0 +1,20 @@
+[package]
+name = "grpc-rust-instance"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]] # Add this section for the server
+name = "server"
+path = "src/server.rs"
+
+[[bin]] # And this for the client
+name = "client"
+path = "src/client.rs"
+
+[dependencies]
+tonic = "0.11"
+prost = "0.12"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+
+[build-dependencies]
+tonic-build = "0.11"
