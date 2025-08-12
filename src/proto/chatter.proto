@@ -1,0 +1,12 @@
+syntax = "proto3"
+
+package chatter;
+
+service chatter{
+    rpc ChatStream (stream ChatMessage) returns (stream ChatMessage) {}
+}
+
+message ChatMessage {
+    string user_id = 1;
+    string text = 2;
+}
