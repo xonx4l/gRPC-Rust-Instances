@@ -18,5 +18,19 @@ impl Chatter for MyChatter {
         )-> Result<Response<Self::ChatStreamStream>,Status> {
              let mut in_Stream = request_into_inner();
              let (tx,rx) = mpsc::channel(128);
+
+             tokio::spawn(async move {
+                 while let Some(result) = in_stream_next().await {
+                    match result {
+                        Ok(msg) => {
+                            println!("Received message from [{}]: {}", msg_user_id, msg_text);
+                        let response = ChatMessage {
+                            user_id = "Server".to_string(),
+                            text: format!("Acknowledged your message: '{}'", msg.text),
+                        };
+                        }
+                    }
+                 }
+             })
         }
 }
