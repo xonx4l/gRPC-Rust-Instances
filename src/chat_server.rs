@@ -42,5 +42,24 @@ impl Chatter for MyChatter {
                  }
                  println!("Client  stream closed.");
              });
+
+             Ok(Response::new(
+                tokio_stream::wrappers::ReceiverStream::new(rx),
+             ))
         }
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let addr = "[::1]:50052".parse()?;
+    let chatter = MyChatter::default();
+
+    println!("ChatServer listening on {}", addr);
+
+    server::builder()
+        .add_service(ChatterServer::new(chatter))
+        .serve(addr)
+        .await?;
+
+        Ok(())
 }
