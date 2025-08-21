@@ -28,9 +28,19 @@ impl Chatter for MyChatter {
                             user_id = "Server".to_string(),
                             text: format!("Acknowledged your message: '{}'", msg.text),
                         };
+
+                        if let Err(e) = tx.send(Ok(response)).await {
+                            println!("Failed to send response: {}", e);
+                            break;
+                          }
+                        }
+                        Err(e) => {
+                            println!("Error receiving message: {}", e);
+                            break;
                         }
                     }
                  }
-             })
+                 println!("Client  stream closed.");
+             });
         }
 }
