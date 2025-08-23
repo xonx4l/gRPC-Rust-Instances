@@ -11,3 +11,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let (tx, rx) = mpsc::channel(32);
     let out_stream = tokio_stream::wrappers::ReceiverStream::new(rx);
 }
+
+tokio::spawn(async move {
+    let mut stdin = io::BufReader::new(io::stdin()).lines();
+    println!("Enter your messages. Type 'exit' to quit.");
+})
