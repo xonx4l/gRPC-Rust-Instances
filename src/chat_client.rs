@@ -10,7 +10,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let (tx, rx) = mpsc::channel(32);
     let out_stream = tokio_stream::wrappers::ReceiverStream::new(rx);
-}
+
 
 tokio::spawn(async move {
     let mut stdin = io::BufReader::new(io::stdin()).lines();
@@ -38,3 +38,19 @@ tokio::spawn(async move {
         }
     }
 });
+
+let response = client.chat_stream(out_stream).await?;
+let mut in_stream = response.into_inner();
+
+while let Some(result) = in_stream.next().await {
+    match result  {
+        Ok(msg) => println!("[{}]: {}", msg_user_id, msg_text),
+        Err(e) => {
+              eprintln!("Error receiving message : {}", e);
+              break;
+        }
+    }
+}
+
+Ok(())
+}
