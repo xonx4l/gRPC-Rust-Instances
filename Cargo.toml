@@ -1,20 +1,29 @@
 [package]
-name = "grpc-rust-instance"
+name = "grpc_practice"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]] # Add this section for the server
+# Greeter Binaries
+[[bin]]
 name = "server"
 path = "src/server.rs"
-
-[[bin]] # And this for the client
+[[bin]]
 name = "client"
 path = "src/client.rs"
+
+# Chat Binaries (New)
+[[bin]]
+name = "chat_server"
+path = "src/chat_server.rs"
+[[bin]]
+name = "chat_client"
+path = "src/chat_client.rs"
 
 [dependencies]
 tonic = "0.11"
 prost = "0.12"
 tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+tokio-stream = "0.1" # Needed for stream manipulation
 
 [build-dependencies]
 tonic-build = "0.11"
